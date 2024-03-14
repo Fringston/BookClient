@@ -40,32 +40,16 @@ public class BookMenu {
                 break;
             case 3:
                 System.out.println("Add new book\n");
-                addnewBook();
-                String title = UtilService.getStringInput("Enter book title: ");
-                Long authorId = UtilService.getLongInput("Enter author id: ");
-                Book book = new Book();
-                book.setTitle(title);
-                Author author = new Author();
-                author.setId(authorId);
-                book.setAuthor(author);
-                BookService.saveBook(book, jwt);
+                addNewBook(jwt);
                 break;
             case 4:
                 System.out.println("Update existing book\n");
-                Long bookId = UtilService.getLongInput("Enter book id to update: ");
-                String newTitle = UtilService.getStringInput("Enter new book title: ");
-                Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
-                Book newBook = new Book();
-                newBook.setId(bookId);
-                newBook.setTitle(newTitle);
-                Author newAuthor = new Author();
-                newAuthor.setId(newAuthorId);
-                newBook.setAuthor(newAuthor);
-                BookService.updateBook(bookId, newBook, jwt);
+                updateBook(jwt);
                 break;
             case 5:
                 System.out.println("Delete book\n");
-                // anropa BookService för att radera bok
+                Long deleteBookId = UtilService.getLongInput("Enter book id to delete: ");
+                BookService.deleteBook(deleteBookId, jwt);
                 break;
             case 6:
                 System.out.println("Back to UserMenu\n");
@@ -75,5 +59,31 @@ public class BookMenu {
                 System.out.println("Invalid choice\n");
         }
     }
-    
+
+    public void addNewBook(String jwt) throws IOException, ParseException {
+        String title = UtilService.getStringInput("Enter book title: ");
+        Long authorId = UtilService.getLongInput("Enter author id: ");
+        Book book = new Book();
+        book.setTitle(title);
+        Author author = new Author();
+        author.setId(authorId);
+        book.setAuthor(author);
+        BookService.saveBook(book, jwt);
+    }
+
+    public void updateBook(String jwt) throws IOException, ParseException {
+        Long bookId = UtilService.getLongInput("Enter book id to update: ");
+        String newTitle = UtilService.getStringInput("Enter new book title: ");
+        Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
+        Book newBook = new Book();
+        newBook.setId(bookId);
+        newBook.setTitle(newTitle);
+        Author newAuthor = new Author();
+        newAuthor.setId(newAuthorId);
+        newBook.setAuthor(newAuthor);
+        BookService.updateBook(bookId, newBook, jwt);
+    }
+
+    public static void main(String[] args) {
+    }
 }

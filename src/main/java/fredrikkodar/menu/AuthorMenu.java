@@ -1,5 +1,7 @@
 package fredrikkodar.menu;
 
+import fredrikkodar.model.Author;
+import fredrikkodar.service.AuthorService;
 import fredrikkodar.service.UtilService;
 
 public class AuthorMenu {
@@ -7,7 +9,7 @@ public class AuthorMenu {
     private boolean isRunning = true;
 
     public void authorMenuChoice() {
-        String[] authorMenuOptions = {"1. Show all authors", "2. Get all books by an author", "3. Search for author", "4. Add new author", "5. Update existing author", "5. Delete author", "6. Back to UserMenu\n"};
+        String[] authorMenuOptions = {"1. Show all authors", "2. Get all books by an author", "3. Add new author", "4. Update existing author", "5. Delete author", "6. Back to UserMenu\n"};
         for (String option : authorMenuOptions) {
             System.out.println(option);
         }
@@ -17,45 +19,61 @@ public class AuthorMenu {
         while (isRunning) {
             authorMenuChoice();
             int choice = UtilService.getIntInput("Enter choice: ");
-            userChoice(choice);
+            userChoice(choice, jwt);
         }
     }
 
-    public void userChoice(int choice) {
+    public void userChoice(int choice, String jwt) {
         // create switch case for user choice
         switch (choice) {
             case 1:
                 System.out.println("Show all authors\n");
-                // anropa AuthorService för att visa alla författare
+                AuthorService.getAuthors(jwt);
                 break;
             case 2:
-                System.out.println("Get all books by an author\n");
-                // anropa AuthorService för att visa alla böcker av en författare
+                System.out.println("Show all books by an author\n");
+                Long id = UtilService.getLongInput("Enter author id: ");
+                AuthorService.getBooksByAuthor(id, jwt);
                 break;
             case 3:
-                System.out.println("Search for author\n");
-                // anropa AuthorService för att söka efter författare
+                System.out.println("Add new author\n");
+                addNewAuthor(jwt);
                 break;
             case 4:
-                System.out.println("Add new author\n");
-                // anropa AuthorService för att lägga till ny författare
+                System.out.println("Update existing author\n");
+                updateAuthor(jwt);
                 break;
             case 5:
-                System.out.println("Update existing author\n");
-                // anropa AuthorService för att uppdatera författare
+                System.out.println("Delete author\n");
+                deleteAuthor(jwt);
                 break;
             case 6:
-                System.out.println("Delete author\n");
-                // anropa AuthorService för att radera författare
-                break;
-            case 7:
                 System.out.println("Back to UserMenu\n");
-                isRunning = false; // Exit Handle author submenu and return to UserMenu
+                isRunning = false;
                 break;
             default:
                 System.out.println("Invalid choice\n");
         }
     }
 
+    public static void addNewAuthor(String jwt) {
+        String name = UtilService.getStringInput("Enter author name: ");
+        Author newAuthor = new Author();
+        AuthorService.saveAuthor(newAuthor, jwt);
+    }
 
+    public static void updateAuthor(String jwt) {
+        Long id = UtilService.getLongInput("Enter author id: ");
+        Author author = AuthorService.getAuthorById(id, jwt);
+        if (author != null) {
+            String name = UtilService.getStringInput("Enter new author name: ");
+            author.setName(name);
+            AuthorService.updateAuthor(id, author, jwt);
+        }
+    }
+
+    public static void deleteAuthor(String jwt) {
+        Long id = UtilService.getLongInput("Enter author id: ");
+        AuthorService.deleteAuthor(id, jwt);
+    }
 }

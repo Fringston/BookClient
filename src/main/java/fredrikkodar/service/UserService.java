@@ -50,8 +50,7 @@ public class UserService {
 
                 ObjectMapper mapper = new ObjectMapper();
 
-                User responseUser = mapper.readValue(EntityUtils.toString(payload), new TypeReference<User>() {
-                });
+                User responseUser = mapper.readValue(EntityUtils.toString(payload), new TypeReference<User>() {});
 
                 System.out.printf("User %s has been created with the user-id: %d%n", responseUser.getUsername(), responseUser.getId());
 
