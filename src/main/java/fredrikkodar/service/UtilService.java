@@ -69,6 +69,7 @@ public class UtilService {
             return getLongInput(prompt);
         }
     }
+
     public static StringEntity createPayload(Object object) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
 
