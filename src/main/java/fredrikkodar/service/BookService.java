@@ -2,6 +2,7 @@ package fredrikkodar.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import fredrikkodar.model.Author;
 import fredrikkodar.model.Book;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -133,4 +134,9 @@ public class BookService {
         System.out.println("Book updated successfully");
     }
 
+    public static void main(String[] args) throws IOException, ParseException {
+        // add book
+//        Author author = new Author(0L,"Paulo Coelho");
+//        Book book = new Book(0L,"The Alchemist", author);
+    }
 }

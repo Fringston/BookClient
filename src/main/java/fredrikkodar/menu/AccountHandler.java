@@ -47,6 +47,12 @@ public class AccountHandler {
 
     private void changePassword() {
         String newPassword = UtilService.getStringInput("Enter new password: ");
-        UserService.changePassword(newPassword);
+        String confirmPassword = UtilService.getStringInput("Confirm new password: ");
+        if (!newPassword.equals(confirmPassword)) {
+            System.out.println("Passwords do not match\n");
+            return;
+        }
+        String oldPassword = UtilService.getStringInput("Enter old password: ");
+        UserService.changePassword(newPassword, oldPassword, confirmPassword);
     }
 }
