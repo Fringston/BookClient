@@ -1,5 +1,6 @@
 package fredrikkodar.menu;
 
+import fredrikkodar.model.LoginResponse;
 import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
 
@@ -12,24 +13,24 @@ public class AccountHandler {
         }
     }
 
-    public void runAccountMenu() {
+    public void runAccountMenu(String jwt) {
         while (isRunning) {
             accountChoice();
             int choice = UtilService.getIntInput("Enter choice: ");
-            userChoice(choice);
+            userChoice(choice, jwt);
         }
     }
 
-    private void userChoice(int choice) {
+    private void userChoice(int choice, String jwt) {
         // create switch case for user choice
         switch (choice) {
             case 1:
                 System.out.println("Change password\n");
-                changePassword();
+                changePassword(jwt);
                 break;
             case 2:
                 System.out.println("Delete account\n");
-                deleteAccount();
+                deleteAccount(jwt);
                 break;
             case 3:
                 System.out.println("Back to UserMenu\n");
@@ -41,11 +42,11 @@ public class AccountHandler {
     }
 
 
-    private void deleteAccount() {
-        UserService.deleteAccount();
+    private void deleteAccount(String jwt) {
+        UserService.deleteAccount(jwt);
     }
 
-    private void changePassword() {
+    private void changePassword(String jwt) {
         String newPassword = UtilService.getStringInput("Enter new password: ");
         String confirmPassword = UtilService.getStringInput("Confirm new password: ");
         if (!newPassword.equals(confirmPassword)) {
@@ -53,6 +54,6 @@ public class AccountHandler {
             return;
         }
         String oldPassword = UtilService.getStringInput("Enter old password: ");
-        UserService.changePassword(newPassword, oldPassword, confirmPassword);
+        UserService.changePassword(jwt,newPassword, oldPassword, confirmPassword);
     }
 }

@@ -71,6 +71,9 @@ public class BookMenu {
         BookService.saveBook(book, jwt);
     }
 
+
+
+
     public void updateBook(String jwt) throws IOException, ParseException {
         Long bookId = UtilService.getLongInput("Enter book id to update: ");
         String newTitle = UtilService.getStringInput("Enter new book title: ");
@@ -81,9 +84,11 @@ public class BookMenu {
         Author newAuthor = new Author();
         newAuthor.setId(newAuthorId);
         newBook.setAuthor(newAuthor);
-        BookService.updateBook(bookId, newBook, jwt);
+        BookService.updateBook(bookId,newBook, jwt);
     }
 
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException, ParseException {
+
     }
 }

@@ -26,8 +26,8 @@ public class UserMenu {
         switch (choice) {
             case 1:
                 System.out.println("Library\n");
-                BookMenu bookMenu = new BookMenu();
-                bookMenu.runBookMenu(jwt);
+//                BookMenu bookMenu = new BookMenu();
+//                bookMenu.runBookMenu(jwt);
             case 2:
                 System.out.println("Authors\n");
                 AuthorMenu authorMenu = new AuthorMenu();
@@ -36,7 +36,7 @@ public class UserMenu {
             case 3:
                 System.out.println("Handle account\n");
                 AccountHandler accountHandler = new AccountHandler();
-                accountHandler.runAccountMenu();
+                accountHandler.runAccountMenu(jwt);
                 break;
             case 4:
                 System.out.println("Admin\n");

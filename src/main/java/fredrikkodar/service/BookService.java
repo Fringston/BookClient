@@ -1,7 +1,9 @@
 package fredrikkodar.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fredrikkodar.model.Author;
 import fredrikkodar.model.Book;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
@@ -43,6 +45,7 @@ public class BookService {
         HttpEntity entity = response.getEntity();
         // convert the response to a list of books
         ObjectMapper mapper = new ObjectMapper();
+
         return mapper.readValue(EntityUtils.toString(entity),new TypeReference<ArrayList<Book>>() {});
     }
 
@@ -66,36 +69,42 @@ public class BookService {
         ObjectMapper mapper = new ObjectMapper();
        Book book = mapper.readValue(EntityUtils.toString(entity), new TypeReference<Book>() {});
        // print the book
-        System.out.printf("Id: %d \n Title: %s,\n Author: %s, ISBN: %s\n", book.getId(), book.getTitle(), book.getAuthor());
+        System.out.printf("Id: %d \n Title: %s,\n Author: %s \n", book.getId(), book.getTitle(), book.getAuthor());
         return book;
     }
+
     // save a book
     public static void saveBook(Book book, String jwt) throws IOException, ParseException {
-       Book newBook = book;
-       HttpPost request = new HttpPost("http://localhost:8081/books");
+        HttpPost request = new HttpPost("http://localhost:8081/books");
+        ObjectMapper mapper = new ObjectMapper();
+        // Construct JSON payload manually
+        JsonNode payload = mapper.createObjectNode()
+                .put("title", book.getTitle())
+                .put("authorId", book.getAuthor().getId());
 
-       ObjectMapper mapper = new ObjectMapper();
-       StringEntity payload = new StringEntity(mapper.writeValueAsString(newBook), ContentType.APPLICATION_JSON);
+        // Serialize JSON payload to string
+        String jsonString = mapper.writeValueAsString(payload);
 
-       request.setEntity(payload);
-       request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
-       CloseableHttpResponse response = httpClient.execute(request);
+        // Set JSON payload as request entity
+        HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+        request.setEntity(entity);
 
-         if (response.getCode() != 200){
-              System.out.println("Error: " + response.getCode());
-              return;
-         }
+        // Set authorization header
+        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
-         HttpEntity entity = response.getEntity();
-
-         Book responseBook = mapper.readValue(EntityUtils.toString(entity), new TypeReference<Book>() {});
-         if (responseBook.getTitle().equals(newBook.getTitle()) && responseBook.getAuthor().equals(newBook.getAuthor())){
-             System.out.println("Book saved successfully");
-         }else {
-             System.out.println("Error saving book");
-         }
-
+        // Execute the request
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            int statusCode = response.getCode();
+            if (statusCode == 200) {
+                System.out.println("Book saved successfully");
+            } else {
+                System.out.println("Error: " + statusCode);
+                System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+            }
+        }
     }
+
+
     // delete a book
     public static void deleteBook(Long id, String jwt) throws IOException {
         HttpDelete request = new HttpDelete("http://localhost:8081/books/" + id);
@@ -109,34 +118,46 @@ public class BookService {
     }
 
     // update a book
-    // update a book
     public static void updateBook(Long id, Book book, String jwt) throws IOException, ParseException {
-        HttpPut request = new HttpPut("http://localhost:8081/books/" + id);
+        HttpPut request = new HttpPut("http://localhost:8081/books");
+        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
-        // Serialize the book object to JSON
-     ObjectMapper mapper = new ObjectMapper();
-     StringEntity payload = new StringEntity(mapper.writeValueAsString(book), ContentType.APPLICATION_JSON);
-     request.setEntity(payload);
-     request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
-        CloseableHttpResponse response = httpClient.execute(request);
-        if (response.getCode() != 200){
-            System.out.println("Error: " + response.getCode());
-            return;
-        }
-        HttpEntity entity = response.getEntity();
-        Book responseBook = mapper.readValue(EntityUtils.toString(entity), new TypeReference<Book>() {});
-        if (responseBook.getTitle().equals(book.getTitle()) && responseBook.getAuthor().equals(book.getAuthor())){
-            System.out.println("Book updated successfully");
-        }else {
-            System.out.println("Error updating book");
-        }
+        ObjectMapper mapper = new ObjectMapper();
+        // Construct JSON payload manually
+        JsonNode payload = mapper.createObjectNode()
+                .put("bookId", id)
+                .put("title", book.getTitle())
+                .put("authorId", book.getAuthor().getId());
 
-        System.out.println("Book updated successfully");
+        // Serialize JSON payload to string
+        String jsonString = mapper.writeValueAsString(payload);
+
+        // Set JSON payload as request entity
+        HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+        request.setEntity(entity);
+
+        // Execute the request
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            int statusCode = response.getCode();
+            if (statusCode == 200) {
+                System.out.println("Book updated successfully");
+            } else {
+                System.out.println("Error: " + statusCode);
+                System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+            }
+        }
     }
+
+
 
     public static void main(String[] args) throws IOException, ParseException {
         // add book
-//        Author author = new Author(0L,"Paulo Coelho");
-//        Book book = new Book(0L,"The Alchemist", author);
+//       Book book = new Book(0L,"The Alchemist");
+//
+//       saveBook(book, 1L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1MjY4MSwiZXhwIjoxNzEwNTM5MDgxfQ.ZeJbVp5h-uIfyBPWeO-UdqVRFDDYnF1qikjp2ZxmE78");
+//        deleteBook(5L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
+//        getBookById(6L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
+//        getAllBooks("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
+
     }
 }
