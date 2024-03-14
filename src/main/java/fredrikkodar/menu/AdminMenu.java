@@ -8,7 +8,7 @@ public class AdminMenu {
     private boolean isRunning = true;
 
     public void adminMenuChoice() {
-        String[] adminMenuOptions = {"1. Get all users", "2. Delete user", "3. Change role", "4. Back to Login Menu\n"};
+        String[] adminMenuOptions = {"1. Get all users", "2. Delete user", "3. Change role"};
         for (String option : adminMenuOptions) {
             System.out.println(option);
         }
