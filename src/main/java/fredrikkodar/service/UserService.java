@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fredrikkodar.model.LoginResponse;
+import fredrikkodar.model.Role;
 import fredrikkodar.model.User;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -113,7 +114,7 @@ public class UserService {
         return null;
     }
 
-    public static List<User> getAllUsers(String jwt) {
+    public static List<User> getUsers(String jwt) {
 
         try {
             HttpGet request = new HttpGet("http://localhost:8081/users/all");
@@ -147,7 +148,7 @@ public class UserService {
         }
         return null;
     }
-    public static void deleteAccount(Long id, String jwt) {
+    public static void deleteAccount(String jwt) {
         try {
             HttpPost request = new HttpPost("http://localhost:8081/users/me/");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
@@ -169,7 +170,6 @@ public class UserService {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
-
     public static void changePassword (String jwt, String oldPassword, String newPassword, String confirmPassword) {
         try {
             ChangingPassword changingPassword = new ChangingPassword(oldPassword, newPassword, confirmPassword);
@@ -182,6 +182,29 @@ public class UserService {
                     return;
                 }
                 System.out.println("Password changed successfully");
+            } catch (JsonProcessingException e) {
+                System.out.println("Json Processing Error: " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("IO Error: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
+
+    public static void changeRole (String jwt, Long id, Role role) {
+        try {
+            User user = new User();
+            user.setRole(role);
+            HttpPut request = new HttpPut(String.format("http://localhost:8081/users/%d", id));
+            request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
+            request.setEntity(createPayload(user));
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                if (response.getCode() != 200) {
+                    System.out.println("Something went wrong with the request: " + response.getCode());
+                    return;
+                }
+                System.out.println("Role changed successfully");
             } catch (JsonProcessingException e) {
                 System.out.println("Json Processing Error: " + e.getMessage());
             } catch (IOException e) {
