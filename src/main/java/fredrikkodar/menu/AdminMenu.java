@@ -1,5 +1,6 @@
 package fredrikkodar.menu;
 
+import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
 
 public class AdminMenu {
@@ -25,7 +26,7 @@ public class AdminMenu {
         switch (choice) {
             case 1:
                 System.out.println("Get all users\n");
-                // anropa UserService för att hämta alla användare
+                UserService.getUsers(jwt);
                 break;
             case 2:
                 System.out.println("Delete user\n");
