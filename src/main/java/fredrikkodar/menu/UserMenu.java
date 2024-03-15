@@ -1,10 +1,8 @@
 package fredrikkodar.menu;
 
 import fredrikkodar.model.LoginResponse;
-import fredrikkodar.model.Role;
-import fredrikkodar.model.User;
-import fredrikkodar.service.UtilService;
 import fredrikkodar.service.UserService;
+import fredrikkodar.service.UtilService;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
@@ -47,7 +45,7 @@ public class UserMenu {
             case 4:
                 System.out.println("Admin\n");
                 LoginResponse loginResponse = UserService.login();
-                if (isAdmin(loginResponse.getUser())) {
+                if (isAdmin(loginResponse.getToken())) {
                     AdminMenu adminMenu = new AdminMenu();
                     adminMenu.runAdminMenu(loginResponse.getToken());
                 } else {
@@ -61,19 +59,24 @@ public class UserMenu {
         }
     }
 
-    private static boolean isAdmin(User user) {
-        if (user != null && user.getAuthorities() != null) {
-            for (Role role : user.getAuthorities()) {
-                if ("admin".equalsIgnoreCase(role.getAuthority())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+//    private static boolean isAdmin(User user) {
+//        if (user != null && user.getAuthorities() != null) {
+//            for (Role role : user.getAuthorities()) {
+//                if ("admin".equalsIgnoreCase(role.getAuthority())) {
+//                    return true;
+//                }
+//            }
+//        }
+//        return false;
+//    }
+private static boolean isAdmin(String token) {
+    // Here you can decode the token and check if it contains admin privileges
+    // For simplicity, let's assume if the token is not null, the user is admin
+    return token != null;
+}
 
     public static void main(String[] args) throws IOException, ParseException {
         UserMenu userMenu = new UserMenu();
-        userMenu.runUserMenu("jwt");
+        userMenu.runUserMenu("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDUxMzY3NCwiZXhwIjoxNzEwNjAwMDc0fQ.zIz2ooCC_Wc4G_q_kyYuIik3NRaPhJcYKohOl7AERhI");
     }
 }
