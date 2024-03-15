@@ -32,46 +32,6 @@ public class UserService {
 
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static void register2() {
-
-        try {
-            String username = getStringInput("Enter username: ");
-            String password = getPasswordInput("Enter your password: ");
-
-            User newUser = new User(0L,username, password);
-
-            HttpPost request = new HttpPost("http://localhost:8081/auth/register");
-            request.setEntity(createPayload(newUser));
-
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-
-                if (response.getCode() != 200) {
-                    System.out.println("Something went wrong with the request: " + response.getCode());
-                    return;
-                }
-
-                HttpEntity payload = response.getEntity();
-
-                ObjectMapper mapper = new ObjectMapper();
-
-                User responseUser = mapper.readValue(EntityUtils.toString(payload), new TypeReference<User>() {});
-
-                System.out.printf("User %s has been created with the user-id: %d%n", responseUser.getUsername(), responseUser.getId());
-
-            } catch (JsonProcessingException e) {
-                System.out.println("Json Processing Error: " + e.getMessage());
-            } catch (IOException e) {
-                System.out.println("IO Error: " + e.getMessage());
-            } catch (ParseException e) {
-                System.out.println("Parse Error: " + e.getMessage());
-            }
-
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
-    }
-
-
     public static void register() throws IOException, ParseException {
             String username = getStringInput("Enter username: ");
             String password = getPasswordInput("Enter your password: ");
@@ -103,7 +63,7 @@ public class UserService {
             }
         }
 
-    public static LoginResponse login() {
+    /*public static LoginResponse login2() {
 
         try {
             String username = getStringInput("Enter username ");
@@ -147,6 +107,41 @@ public class UserService {
             System.out.println("Something went wrong: " + e.getMessage());
         }
         return null;
+    }*/
+
+    public static LoginResponse login() throws IOException, ParseException {
+        String username = getStringInput("Enter username ");
+        String password = getPasswordInput("Enter your password ");
+
+        HttpPost request = new HttpPost("http://localhost:8081/auth/login");
+        ObjectMapper mapper = new ObjectMapper();
+
+        // Construct JSON payload manually
+        JsonNode payload = mapper.createObjectNode()
+                .put("username", username)
+                .put("password", password);
+
+        // Serialize JSON payload to string
+        String jsonString = mapper.writeValueAsString(payload);
+
+        // Set JSON payload as request entity
+        HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+        request.setEntity(entity);
+
+        // Execute the request
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            int statusCode = response.getCode();
+            if (statusCode == 200) {
+                HttpEntity responseEntity = response.getEntity();
+                LoginResponse loginResponse = mapper.readValue(EntityUtils.toString(responseEntity), new TypeReference<LoginResponse>() {});
+                System.out.println("Login successful!");
+                return loginResponse;
+            } else {
+                System.out.println("Error: " + statusCode);
+                System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+                return null;
+            }
+        }
     }
 
     public static List<User> getUsers(String jwt) {

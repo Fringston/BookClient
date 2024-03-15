@@ -32,9 +32,9 @@ public class Login {
                 LoginResponse loginResponse = UserService.login();
                 if (loginResponse != null) {
                     System.out.println("Login successful!");
-                    System.out.println("Welcome " + loginResponse.getUser().getUsername());
+                    //System.out.println("Welcome " + loginResponse.getUser().getUsername());
                     UserMenu userMenu = new UserMenu();
-                    userMenu.runUserMenu(loginResponse.getJwt());
+                    userMenu.runUserMenu(loginResponse.getToken());
                 } else {
                     System.out.println("Login failed. Please try again.");
                 }

@@ -1,11 +1,13 @@
 package fredrikkodar.menu;
 
-import fredrikkodar.model.Book;
 import fredrikkodar.model.LoginResponse;
 import fredrikkodar.model.Role;
 import fredrikkodar.model.User;
 import fredrikkodar.service.UtilService;
 import fredrikkodar.service.UserService;
+import org.apache.hc.core5.http.ParseException;
+
+import java.io.IOException;
 
 public class UserMenu {
 
@@ -18,7 +20,7 @@ public class UserMenu {
         }
     }
 
-    public void runUserMenu(String jwt) {
+    public void runUserMenu(String jwt) throws IOException, ParseException {
         while (isRunning) {
             userMenuChoice();
             int choice = UtilService.getIntInput("Enter choice: ");
@@ -26,7 +28,7 @@ public class UserMenu {
         }
     }
 
-    private void userMenuChoice(int choice, String jwt) {
+    private void userMenuChoice(int choice, String jwt) throws IOException, ParseException {
         switch (choice) {
             case 1:
                System.out.println("Library\n");
@@ -47,7 +49,7 @@ public class UserMenu {
                 LoginResponse loginResponse = UserService.login();
                 if (isAdmin(loginResponse.getUser())) {
                     AdminMenu adminMenu = new AdminMenu();
-                    adminMenu.runAdminMenu(loginResponse.getJwt());
+                    adminMenu.runAdminMenu(loginResponse.getToken());
                 } else {
                     System.out.println("Access denied. Only admins can access the admin menu.");
                 }
@@ -70,7 +72,7 @@ public class UserMenu {
         return false;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ParseException {
         UserMenu userMenu = new UserMenu();
         userMenu.runUserMenu("jwt");
     }
