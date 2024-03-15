@@ -42,11 +42,11 @@ public class AccountHandler {
     }
 
 
-    private void deleteAccount(String jwt) {
+    private static void deleteAccount(String jwt) {
         UserService.deleteAccount(jwt);
     }
 
-    private void changePassword(String jwt) {
+    private static void changePassword(String jwt) {
         String newPassword = UtilService.getStringInput("Enter new password: ");
         String confirmPassword = UtilService.getStringInput("Confirm new password: ");
         if (!newPassword.equals(confirmPassword)) {
@@ -55,5 +55,11 @@ public class AccountHandler {
         }
         String oldPassword = UtilService.getStringInput("Enter old password: ");
         UserService.changePassword(jwt,newPassword, oldPassword, confirmPassword);
+    }
+
+    public static void main(String[] args) {
+        changePassword("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWZhciIsImlhdCI6MTcxMDQ5MTU5NCwiZXhwIjoxNzEwNTc3OTk0fQ.pky447L8Uo2qJRKxYyPWnnA-Rypjtmc3e5SF-V7Hx3Q");
+
+
     }
 }
