@@ -32,10 +32,15 @@ public class AdminMenu {
             case 1:
                 System.out.println("Get all users\n");
                 List<User> users = UserService.getUsers(jwt);
-                for (User user : users) {
-                    System.out.println(user);
+                if (users != null) {
+                    for (User user : users) {
+                        System.out.println(user);
+                    }
+                } else {
+                    System.out.println("Failed to get users");
                 }
                 break;
+
             case 2:
                 System.out.println("Delete user\n");
                 id = UtilService.getLongInput("Enter user id to delete: ");

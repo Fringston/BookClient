@@ -1,7 +1,11 @@
 package fredrikkodar.menu;
 
 import fredrikkodar.model.Book;
+import fredrikkodar.model.LoginResponse;
+import fredrikkodar.model.Role;
+import fredrikkodar.model.User;
 import fredrikkodar.service.UtilService;
+import fredrikkodar.service.UserService;
 
 public class UserMenu {
 
@@ -40,12 +44,30 @@ public class UserMenu {
                 break;
             case 4:
                 System.out.println("Admin\n");
-                AdminMenu adminMenu = new AdminMenu();
-                adminMenu.runAdminMenu(jwt);
+                LoginResponse loginResponse = UserService.login();
+                if (isAdmin(loginResponse.getUser())) {
+                    AdminMenu adminMenu = new AdminMenu();
+                    adminMenu.runAdminMenu(loginResponse.getJwt());
+                } else {
+                    System.out.println("Access denied. Only admins can access the admin menu.");
+                }
                 break;
+
+
             default:
                 System.out.println("Invalid choice\n");
         }
+    }
+
+    private static boolean isAdmin(User user) {
+        if (user != null && user.getAuthorities() != null) {
+            for (Role role : user.getAuthorities()) {
+                if ("admin".equalsIgnoreCase(role.getAuthority())) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public static void main(String[] args) {
