@@ -54,11 +54,11 @@ public class AccountHandler {
             return;
         }
         String oldPassword = UtilService.getStringInput("Enter old password: ");
-        UserService.changePassword(jwt,newPassword, oldPassword, confirmPassword);
+        UserService.changePassword(jwt,oldPassword, newPassword, confirmPassword);
     }
 
     public static void main(String[] args) {
-        changePassword("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWZhciIsImlhdCI6MTcxMDQ5MTU5NCwiZXhwIjoxNzEwNTc3OTk0fQ.pky447L8Uo2qJRKxYyPWnnA-Rypjtmc3e5SF-V7Hx3Q");
+        changePassword("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWZhcjEiLCJpYXQiOjE3MTA1MDAzNjQsImV4cCI6MTcxMDU4Njc2NH0.Pdff3M2UsTyN05jGKFFw6BA6Djr8qD9Jhy4RNwVLHCA");
 
 
     }
