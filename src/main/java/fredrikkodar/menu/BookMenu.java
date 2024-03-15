@@ -75,7 +75,7 @@ public class BookMenu {
         BookService.saveBook(book, jwt);
     }
 
-    public void updateBook(String jwt) throws IOException, ParseException {
+    public void updateBook2(String jwt) throws IOException, ParseException {
         Long bookId = UtilService.getLongInput("Enter book id to update: ");
         String newTitle = UtilService.getStringInput("Enter new book title: ");
         Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
@@ -87,4 +87,53 @@ public class BookMenu {
         newBook.setAuthor(newAuthor);
         BookService.updateBook(bookId,newBook, jwt);
     }
+
+    public void updateBook(String jwt) throws IOException, ParseException {
+        Long bookId = UtilService.getLongInput("Enter book id to update: ");
+        Book existingBook = BookService.getBookById(bookId, jwt); // Fetch the existing book
+        if (existingBook == null) {
+            System.out.println("Book not found");
+            return;
+        }
+
+        Book newBook = new Book();
+        newBook.setId(bookId);
+        newBook.setAuthor(existingBook.getAuthor()); // Set the existing author
+
+        System.out.println("1. Update book title");
+        System.out.println("2. Update book author");
+        System.out.println("3. Update both title and author");
+        System.out.println("4. No update");
+        int choice = UtilService.getIntInput("Enter your choice: ");
+
+        switch (choice) {
+            case 1:
+                String newTitle = UtilService.getStringInput("Enter new book title: ");
+                newBook.setTitle(newTitle);
+                break;
+            case 2:
+                Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
+                Author newAuthor = new Author();
+                newAuthor.setId(newAuthorId);
+                newBook.setAuthor(newAuthor);
+                break;
+            case 3:
+                newTitle = UtilService.getStringInput("Enter new book title: ");
+                newBook.setTitle(newTitle);
+                newAuthorId = UtilService.getLongInput("Enter new author id: ");
+                newAuthor = new Author();
+                newAuthor.setId(newAuthorId);
+                newBook.setAuthor(newAuthor);
+                break;
+            case 4:
+                System.out.println("No updates made.");
+                return;
+            default:
+                System.out.println("Invalid choice");
+                return;
+        }
+
+        BookService.updateBook(bookId, newBook, jwt);
+    }
+
 }
