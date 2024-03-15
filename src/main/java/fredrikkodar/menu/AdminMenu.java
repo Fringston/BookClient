@@ -1,7 +1,11 @@
 package fredrikkodar.menu;
 
+import fredrikkodar.model.Role;
+import fredrikkodar.model.User;
 import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
+
+import java.util.List;
 
 public class AdminMenu {
 
@@ -23,21 +27,34 @@ public class AdminMenu {
     }
 
     private void adminMenuChoice(int choice, String jwt) {
+        Long id;
         switch (choice) {
             case 1:
                 System.out.println("Get all users\n");
-                UserService.getUsers(jwt);
+                List<User> users = UserService.getUsers(jwt);
+                for (User user : users) {
+                    System.out.println(user);
+                }
                 break;
             case 2:
                 System.out.println("Delete user\n");
-                // anropa UserService för att radera användare
+                id = UtilService.getLongInput("Enter user id to delete: ");
+                UserService.deleteUser(jwt, id);
                 break;
             case 3:
                 System.out.println("Change role\n");
-                // anropa UserService för att ändra roll
+                id = UtilService.getLongInput("Enter user id: ");
+                String roleInput = UtilService.getStringInput("Enter new role (ADMIN, USER): ");
+                Role role = Role.valueOf(roleInput.toUpperCase());
+                UserService.changeRole(jwt, id, role);
                 break;
             default:
                 System.out.println("Invalid choice\n");
         }
+    }
+
+    public static void main(String[] args) {
+        AdminMenu adminMenu = new AdminMenu();
+        adminMenu.runAdminMenu("jwt");
     }
 }

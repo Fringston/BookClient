@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fredrikkodar.model.LoginResponse;
 import fredrikkodar.model.Role;
 import fredrikkodar.model.User;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
@@ -147,6 +148,30 @@ public class UserService {
         }
         return null;
     }
+
+    // Clara
+    // Testar denna metod till AdminMenu.java
+    public static void deleteUser(String jwt, Long id) {
+        try {
+            HttpDelete request = new HttpDelete(String.format("http://localhost:8081/users/%d", id));
+            request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
+
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+
+                if (response.getCode() != 200) {
+                    System.out.println("Something went wrong with the request: " + response.getCode());
+                    return;
+                }
+                System.out.println("User deleted successfully");
+
+            } catch (IOException e) {
+                System.out.println("IO Error: " + e.getMessage());
+            }
+        } catch (Exception e) {
+            System.out.println("Something went wrong: " + e.getMessage());
+        }
+    }
+
     public static void deleteAccount(String jwt) {
         try {
             HttpPost request = new HttpPost("http://localhost:8081/users/me/");

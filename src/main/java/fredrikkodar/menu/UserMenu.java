@@ -25,9 +25,9 @@ public class UserMenu {
     private void userMenuChoice(int choice, String jwt) {
         switch (choice) {
             case 1:
-                System.out.println("Library\n");
-//                BookMenu bookMenu = new BookMenu();
-//                bookMenu.runBookMenu(jwt);
+               System.out.println("Library\n");
+    //            BookMenu bookMenu = new BookMenu();
+     //          bookMenu.runBookMenu(jwt);
             case 2:
                 System.out.println("Authors\n");
                 AuthorMenu authorMenu = new AuthorMenu();
@@ -46,5 +46,10 @@ public class UserMenu {
             default:
                 System.out.println("Invalid choice\n");
         }
+    }
+
+    public static void main(String[] args) {
+        UserMenu userMenu = new UserMenu();
+        userMenu.runUserMenu("jwt");
     }
 }

@@ -38,11 +38,27 @@ public class Login {
                 } else {
                     System.out.println("Login failed. Please try again.");
                 }
+                break;
 
             case 2:
                 MainMenu mainMenu = new MainMenu();
+                mainMenu.runMenu();
+                break;
 
         }
+
+    }
+
+    public static void main(String[] args) {
+
+        Login login = new Login();
+        try {
+            login.runLoginMenu();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+
+
 
     }
 }
