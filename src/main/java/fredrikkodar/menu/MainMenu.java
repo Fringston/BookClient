@@ -1,6 +1,9 @@
 package fredrikkodar.menu;
 
 import fredrikkodar.service.UtilService;
+import org.apache.hc.core5.http.ParseException;
+
+import java.io.IOException;
 
 public class MainMenu {
 
@@ -12,7 +15,7 @@ public class MainMenu {
             System.out.println(option);
         }
     }
-    public void runMenu() {
+    public void runMenu() throws IOException, ParseException {
         while (isRunning){
             printMenu();
             int choice = UtilService.getIntInput("Enter choice: ");
@@ -20,11 +23,16 @@ public class MainMenu {
         }
     }
 
-    private void userChoice(int choice) {
+    private void userChoice(int choice) throws IOException, ParseException {
+<<<<<<< HEAD
         // crate swith case for runMenu
+=======
+        // create swith case for runMenu
+>>>>>>> fb6b3349e5ca991a182f52e19e69bd04253c00e4
         switch (choice){
             case 1:
-                System.out.println("Log in\n");
+                Login loginMenu = new Login();
+                loginMenu.runLoginMenu();
                 break;
             case 2:
                 System.out.println("Register\n");
@@ -38,7 +46,7 @@ public class MainMenu {
                 System.out.println("Invalid choice\n");
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ParseException {
         MainMenu mainMenu = new MainMenu();
         mainMenu.runMenu();
     }

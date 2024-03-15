@@ -22,4 +22,7 @@ public class User {
 
     public User(Long l, String username, String password) {
     }
+
+    public User(String username, String password) {
+    }
 }

@@ -3,6 +3,7 @@ package fredrikkodar.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fredrikkodar.model.LoginResponse;
 import fredrikkodar.model.Role;
@@ -14,10 +15,12 @@ import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.HttpHeaders;
 import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,13 +32,13 @@ public class UserService {
 
     private static final CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    public static void register() {
+    public static void register2() {
 
         try {
             String username = getStringInput("Enter username: ");
             String password = getPasswordInput("Enter your password: ");
 
-            User newUser = new User(0L, username, password);
+            User newUser = new User(0L,username, password);
 
             HttpPost request = new HttpPost("http://localhost:8081/auth/register");
             request.setEntity(createPayload(newUser));
@@ -67,6 +70,38 @@ public class UserService {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
+
+    public static void register() throws IOException, ParseException {
+            String username = getStringInput("Enter username: ");
+            String password = getPasswordInput("Enter your password: ");
+
+            HttpPost request = new HttpPost("http://localhost:8081/auth/register");
+            ObjectMapper mapper = new ObjectMapper();
+
+            // Construct JSON payload manually
+            JsonNode payload = mapper.createObjectNode()
+                    .put("username", username)
+                    .put("password", password);
+
+            // Serialize JSON payload to string
+            String jsonString = mapper.writeValueAsString(payload);
+
+            // Set JSON payload as request entity
+            HttpEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+            request.setEntity(entity);
+
+            // Execute the request
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int statusCode = response.getCode();
+                if (statusCode == 200) {
+                    System.out.println("User registered successfully");
+                } else {
+                    System.out.println("Error: " + statusCode);
+                    System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+                }
+            }
+        }
 
     public static LoginResponse login() {
 
@@ -174,7 +209,7 @@ public class UserService {
 
     public static void deleteAccount(String jwt) {
         try {
-            HttpPost request = new HttpPost("http://localhost:8081/users/me/");
+            HttpPost request = new HttpPost("http://localhost:8081/users/me");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -194,6 +229,7 @@ public class UserService {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
     public static void changePassword (String jwt, String oldPassword, String newPassword, String confirmPassword) {
         try {
             ChangingPassword changingPassword = new ChangingPassword(oldPassword, newPassword, confirmPassword);
