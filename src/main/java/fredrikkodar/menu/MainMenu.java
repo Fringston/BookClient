@@ -24,10 +24,15 @@ public class MainMenu {
     }
 
     private void userChoice(int choice) throws IOException, ParseException {
+<<<<<<< HEAD
         // crate swith case for runMenu
+=======
+        // create swith case for runMenu
+>>>>>>> fb6b3349e5ca991a182f52e19e69bd04253c00e4
         switch (choice){
             case 1:
-                System.out.println("Log in\n");
+                Login loginMenu = new Login();
+                loginMenu.runLoginMenu();
                 break;
             case 2:
                 System.out.println("Register\n");
