@@ -7,6 +7,7 @@ import fredrikkodar.service.UtilService;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BookMenu {
 
@@ -32,7 +33,10 @@ public class BookMenu {
         switch (choice) {
             case 1:
                 System.out.println("Show all books\n");
-                BookService.getAllBooks(jwt);
+                List<Book> books = BookService.getAllBooks(jwt);
+                for (Book book : books) {
+                    System.out.println(book);
+                }
                 break;
             case 2:
                 System.out.println("Search for book\n");
@@ -71,9 +75,6 @@ public class BookMenu {
         BookService.saveBook(book, jwt);
     }
 
-
-
-
     public void updateBook(String jwt) throws IOException, ParseException {
         Long bookId = UtilService.getLongInput("Enter book id to update: ");
         String newTitle = UtilService.getStringInput("Enter new book title: ");
@@ -85,10 +86,5 @@ public class BookMenu {
         newAuthor.setId(newAuthorId);
         newBook.setAuthor(newAuthor);
         BookService.updateBook(bookId,newBook, jwt);
-    }
-
-
-    public static void main(String[] args) throws IOException, ParseException {
-
     }
 }

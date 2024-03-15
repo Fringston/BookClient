@@ -14,7 +14,7 @@ public class UserMenu {
     private boolean isRunning = true;
 
     public void userMenuChoice() {
-        String[] userMenuOptions = {"1. Library", "2 Authors", "3. Handle account", "4. Admin\n"};
+        String[] userMenuOptions = {"1. Library", "2. Authors", "3. Handle account", "4. Admin\n"};
         for (String option : userMenuOptions) {
             System.out.println(option);
         }
@@ -32,8 +32,8 @@ public class UserMenu {
         switch (choice) {
             case 1:
                System.out.println("Library\n");
-    //            BookMenu bookMenu = new BookMenu();
-     //          bookMenu.runBookMenu(jwt);
+                BookMenu bookMenu = new BookMenu();
+                bookMenu.runBookMenu(jwt);
             case 2:
                 System.out.println("Authors\n");
                 AuthorMenu authorMenu = new AuthorMenu();

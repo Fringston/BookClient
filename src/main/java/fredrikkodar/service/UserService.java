@@ -63,52 +63,6 @@ public class UserService {
             }
         }
 
-    /*public static LoginResponse login2() {
-
-        try {
-            String username = getStringInput("Enter username ");
-            String password = getPasswordInput("Enter your password ");
-
-            User loginUser = new User(0L, username, password);
-
-            HttpPost request = new HttpPost("http://localhost:8081/auth/login");
-            request.setEntity(createPayload(loginUser));
-
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-
-                if (response.getCode() != 200) {
-                    System.out.println("Something went wrong with the request: " + response.getCode());
-                    return null;
-                }
-
-                HttpEntity payload = response.getEntity();
-
-                ObjectMapper mapper = new ObjectMapper();
-                LoginResponse loginResponse = mapper.readValue(EntityUtils.toString(payload), new TypeReference<LoginResponse>() {
-                });
-                if (loginResponse.getUser() == null) {
-                    System.out.println("Wrong username or password. Please try again.");
-                    return null;
-                }
-                System.out.printf("\nUser: %s has logged in%n", loginResponse.getUser().getUsername());
-
-                return loginResponse;
-
-            } catch (JsonProcessingException e) {
-                System.out.println("Json Processing Error: " + e.getMessage());
-            } catch (IOException e) {
-                System.out.println("IO Exception Error: " + e.getMessage());
-            } catch (ParseException e) {
-                System.out.println("Parse Error: " + e.getMessage());
-            }
-            return null;
-
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e.getMessage());
-        }
-        return null;
-    }*/
-
     public static LoginResponse login() throws IOException, ParseException {
         String username = getStringInput("Enter username ");
         String password = getPasswordInput("Enter your password ");
@@ -134,7 +88,7 @@ public class UserService {
             if (statusCode == 200) {
                 HttpEntity responseEntity = response.getEntity();
                 LoginResponse loginResponse = mapper.readValue(EntityUtils.toString(responseEntity), new TypeReference<LoginResponse>() {});
-                System.out.println("Login successful!");
+                //System.out.println("Login successful!");
                 return loginResponse;
             } else {
                 System.out.println("Error: " + statusCode);
