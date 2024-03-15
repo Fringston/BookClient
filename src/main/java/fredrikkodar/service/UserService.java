@@ -149,7 +149,7 @@ public class UserService {
     }
     public static void deleteAccount(String jwt) {
         try {
-            HttpPost request = new HttpPost("http://localhost:8081/users/me/");
+            HttpPost request = new HttpPost("http://localhost:8081/users/me");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
