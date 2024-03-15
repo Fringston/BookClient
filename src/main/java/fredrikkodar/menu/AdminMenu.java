@@ -58,8 +58,4 @@ public class AdminMenu {
         }
     }
 
-    public static void main(String[] args) {
-        AdminMenu adminMenu = new AdminMenu();
-        adminMenu.runAdminMenu("jwt");
-    }
 }

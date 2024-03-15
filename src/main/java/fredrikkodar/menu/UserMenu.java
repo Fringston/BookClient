@@ -8,7 +8,6 @@ import fredrikkodar.service.UserService;
 import org.apache.hc.core5.http.ParseException;
 
 import java.io.IOException;
-
 public class UserMenu {
 
     private boolean isRunning = true;
@@ -54,8 +53,6 @@ public class UserMenu {
                     System.out.println("Access denied. Only admins can access the admin menu.");
                 }
                 break;
-
-
             default:
                 System.out.println("Invalid choice\n");
         }
@@ -72,8 +69,4 @@ public class UserMenu {
         return false;
     }
 
-    public static void main(String[] args) throws IOException, ParseException {
-        UserMenu userMenu = new UserMenu();
-        userMenu.runUserMenu("jwt");
-    }
 }

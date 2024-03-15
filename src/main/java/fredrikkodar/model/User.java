@@ -16,8 +16,6 @@ public class User {
     private String password;
     private Role role;
 
-    //Clara
-    //behöver till Admin-kontroll
     private Set<Role> authorities;
 
     public User(Long l, String username, String password) {
