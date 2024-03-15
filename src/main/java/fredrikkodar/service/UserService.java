@@ -204,7 +204,7 @@ public class UserService {
 
     public static void deleteAccount(String jwt) {
         try {
-            HttpPost request = new HttpPost("http://localhost:8081/users/me");
+            HttpDelete request = new HttpDelete("http://localhost:8081/users/me");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -228,7 +228,7 @@ public class UserService {
     public static void changePassword (String jwt, String oldPassword, String newPassword, String confirmPassword) {
         try {
             ChangingPassword changingPassword = new ChangingPassword(oldPassword, newPassword, confirmPassword);
-            HttpPut request = new HttpPut("http://localhost:8081/users/changePass/");
+            HttpPut request = new HttpPut("http://localhost:8081/users/changePass");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             request.setEntity(createPayload(changingPassword));
             try (CloseableHttpResponse response = httpClient.execute(request)) {
