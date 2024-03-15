@@ -28,7 +28,7 @@ public class MainMenu {
                 break;
             case 2:
                 System.out.println("Register\n");
-                RegisterMenu.register();
+                RegisterMenu.runRegisterMenu();
                 break;
             case 3:
                 System.out.println("Goodbye!\n");
@@ -37,5 +37,9 @@ public class MainMenu {
             default:
                 System.out.println("Invalid choice\n");
         }
+    }
+    public static void main(String[] args) {
+        MainMenu mainMenu = new MainMenu();
+        mainMenu.runMenu();
     }
 }
