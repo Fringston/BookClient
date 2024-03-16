@@ -5,6 +5,7 @@ import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
 import org.apache.hc.core5.http.ParseException;
 
+
 import java.io.IOException;
 public class UserMenu {
 
@@ -56,33 +57,7 @@ public class UserMenu {
         }
     }
 
-
-
-    private static boolean isAdmin(User user) {
-        if (user != null && user.getAuthorities() != null) {
-            for (Role role : user.getAuthorities()) {
-                if ("admin".equalsIgnoreCase(role.getAuthority())) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-
-//    private static boolean isAdmin(User user) {
-//        if (user != null && user.getAuthorities() != null) {
-//            for (Role role : user.getAuthorities()) {
-//                if ("admin".equalsIgnoreCase(role.getAuthority())) {
-//                    return true;
-//                }
-//            }
-//        }
-//        return false;
-//    }
 private static boolean isAdmin(String token) {
-    // Here you can decode the token and check if it contains admin privileges
-    // For simplicity, let's assume if the token is not null, the user is admin
     return token != null;
 }
 

@@ -12,7 +12,7 @@ public class AdminMenu {
     private boolean isRunning = true;
 
     public void adminMenuChoice() {
-        String[] adminMenuOptions = {"1. Get all users", "2. Delete user", "3. Change role"};
+        String[] adminMenuOptions = {"1. Get all users", "2. Delete user", "3. Change role", "4. Back to User Menu\n"};
         for (String option : adminMenuOptions) {
             System.out.println(option);
         }
@@ -53,6 +53,11 @@ public class AdminMenu {
                 Role role = Role.valueOf(roleInput.toUpperCase());
                 UserService.changeRole(jwt, id, role);
                 break;
+           case 4:
+                System.out.println("Back to User Menu\n");
+                isRunning = false;
+                break;
+
             default:
                 System.out.println("Invalid choice\n");
         }
