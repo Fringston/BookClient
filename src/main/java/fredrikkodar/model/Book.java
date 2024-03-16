@@ -20,5 +20,11 @@ public class Book {
         this.title = title;
     }
 
-
+    @Override
+    public String toString() {
+        return "Book ID: " + id + "\n" +
+                "Title: " + title + "\n" +
+                "Author: " + author.getName() + "\n" +
+                "-------------------------";
+    }
 }

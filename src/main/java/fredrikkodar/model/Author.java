@@ -12,4 +12,11 @@ public class Author {
     private Long id;
     private String name;
 
+    @Override
+    public String toString() {
+        return "Author ID: " + id + "\n" +
+                "Name: " + name + "\n" +
+                "-------------------------";
+    }
+
 }

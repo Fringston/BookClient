@@ -1,8 +1,12 @@
 package fredrikkodar.menu;
 
 import fredrikkodar.model.Author;
+import fredrikkodar.model.Book;
 import fredrikkodar.service.AuthorService;
+import fredrikkodar.service.BookService;
 import fredrikkodar.service.UtilService;
+
+import java.util.List;
 
 public class AuthorMenu {
 
@@ -28,12 +32,18 @@ public class AuthorMenu {
         switch (choice) {
             case 1:
                 System.out.println("Show all authors\n");
-                AuthorService.getAuthors(jwt);
+                List<Author> authors = AuthorService.getAuthors(jwt);
+                for (Author author : authors) {
+                    System.out.println(author);
+                }
                 break;
             case 2:
                 System.out.println("Show all books by an author\n");
                 Long id = UtilService.getLongInput("Enter author id: ");
-                AuthorService.getBooksByAuthor(id, jwt);
+                List<Book> books = AuthorService.getBooksByAuthor(id, jwt);
+                for (Book book : books) {
+                    System.out.println(book);
+                }
                 break;
             case 3:
                 System.out.println("Add new author\n");
@@ -59,6 +69,7 @@ public class AuthorMenu {
     public static void addNewAuthor(String jwt) {
         String name = UtilService.getStringInput("Enter author name: ");
         Author newAuthor = new Author();
+        newAuthor.setName(name);
         AuthorService.saveAuthor(newAuthor, jwt);
     }
 
@@ -76,4 +87,6 @@ public class AuthorMenu {
         Long id = UtilService.getLongInput("Enter author id: ");
         AuthorService.deleteAuthor(id, jwt);
     }
+
+
 }
