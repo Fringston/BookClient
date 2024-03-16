@@ -58,6 +58,7 @@ public class UserMenu {
         }
     }
 
+
     private static boolean isAdmin(User user) {
         if (user != null && user.getAuthorities() != null) {
             for (Role role : user.getAuthorities()) {
