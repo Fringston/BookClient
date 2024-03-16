@@ -3,14 +3,11 @@ package fredrikkodar.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import fredrikkodar.model.Author;
 import fredrikkodar.model.Book;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
-import org.apache.hc.client5.http.entity.EntityBuilder;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -118,7 +115,7 @@ public class BookService {
     }
 
     // update a book
-    public static void updateBook(Long id, Book book, String jwt) throws IOException, ParseException {
+    public static void updateBook(Long id, Book book, Long authorId, String jwt) throws IOException, ParseException {
         HttpPut request = new HttpPut("http://localhost:8081/books");
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
@@ -127,7 +124,7 @@ public class BookService {
         JsonNode payload = mapper.createObjectNode()
                 .put("bookId", id)
                 .put("title", book.getTitle())
-                .put("authorId", book.getAuthor().getId());
+                .put("authorId", authorId);
 
         // Serialize JSON payload to string
         String jsonString = mapper.writeValueAsString(payload);
@@ -155,9 +152,14 @@ public class BookService {
 //       Book book = new Book(0L,"The Alchemist");
 //
 //       saveBook(book, 1L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1MjY4MSwiZXhwIjoxNzEwNTM5MDgxfQ.ZeJbVp5h-uIfyBPWeO-UdqVRFDDYnF1qikjp2ZxmE78");
-//        deleteBook(5L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
+//        deleteBook(6L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNDMwMywiZXhwIjoxNzEwNjkwNzAzfQ.qtiSovJeKxoUQOy3-lWwnFi5TpGpnzbeXwxdLxnyn5I");
 //        getBookById(6L,"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
 //        getAllBooks("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDQ1NTAyMiwiZXhwIjoxNzEwNTQxNDIyfQ.3gOMPdgaZ3_AewQ_2HyGIymBVstLD4_ThvwgaRu-Lbg");
+
+        //update book
+
+//        Book book = new Book("The Alchemist");
+//        updateBook(6L, book, 1L, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNDMwMywiZXhwIjoxNzEwNjkwNzAzfQ.qtiSovJeKxoUQOy3-lWwnFi5TpGpnzbeXwxdLxnyn5I");
 
     }
 }
