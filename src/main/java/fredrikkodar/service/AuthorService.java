@@ -1,9 +1,11 @@
 package fredrikkodar.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fredrikkodar.model.Author;
 import fredrikkodar.model.Book;
+import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
@@ -18,7 +20,6 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 
 import java.io.IOException;
-
 import java.util.List;
 
 public class AuthorService {
@@ -115,7 +116,7 @@ public class AuthorService {
     public static void deleteAuthor(Long id, String jwt) {
         try {
             // call the API to delete an author by id
-            HttpGet request = new HttpGet("http://localhost:8081/authors/" + id);
+            HttpDelete request = new HttpDelete("http://localhost:8081/authors/" + id);
             // add the JWT to the request
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             // execute the request
@@ -133,24 +134,33 @@ public class AuthorService {
 
     public static void updateAuthor(Long id, Author author, String jwt) {
         try {
-            HttpPut request = new HttpPut("http://localhost:8081/authors/" + id);
+            HttpPut request = new HttpPut("http://localhost:8081/authors");
 
             // Serialize the author object to JSON
             ObjectMapper mapper = new ObjectMapper();
-            StringEntity payload = new StringEntity(mapper.writeValueAsString(author), ContentType.APPLICATION_JSON);
-            request.setEntity(payload);
+            JsonNode payload = mapper.createObjectNode()
+                    .put("id", id)
+                    .put("name", author.getName()); // Assuming "name" is the property to update
+
+            // Serialize JSON payload to string
+            String jsonString = mapper.writeValueAsString(payload);
+
+            // Set JSON payload as request entity
+            StringEntity entity = new StringEntity(jsonString, ContentType.APPLICATION_JSON);
+            request.setEntity(entity);
+
+            // Set authorization header
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
-            CloseableHttpResponse response = httpClient.execute(request);
-            if (response.getCode() != 200){
-                System.out.println("Error: " + response.getCode());
-                return;
-            }
-            HttpEntity entity = response.getEntity();
-            Author responseAuthor = mapper.readValue(EntityUtils.toString(entity), new TypeReference<Author>() {});
-            if (responseAuthor.getName().equals(author.getName())){
-                System.out.println("Author updated successfully");
-            }else {
-                System.out.println("Error updating author");
+
+            // Execute the request
+            try (CloseableHttpResponse response = httpClient.execute(request)) {
+                int statusCode = response.getCode();
+                if (statusCode == 200) {
+                    System.out.println("Author updated successfully");
+                } else {
+                    System.out.println("Error: " + statusCode);
+                    System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
+                }
             }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -182,6 +192,10 @@ public class AuthorService {
             e.printStackTrace();
             return null;
         }
+    }
+    public static void main(String[] args) {
+//        Author newAuthor = new Author("New Author");
+//      updateAuthor(1L, newAuthor, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNjEzMywiZXhwIjoxNzEwNjkyNTMzfQ.1wrV-IzHpLvkc8y6_GHXcTdrGbwbfeZXSY3uWuZ0e9A");
     }
 
 
