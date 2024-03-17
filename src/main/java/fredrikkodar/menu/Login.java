@@ -45,7 +45,10 @@ public class Login {
                 break;
         }
     }
-
+public static void main(String[] args) throws IOException, ParseException {
+        Login login = new Login();
+        login.runLoginMenu();
+    }
 
 }
 

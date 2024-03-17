@@ -62,5 +62,9 @@ public class AdminMenu {
                 System.out.println("Invalid choice\n");
         }
     }
+    public static void main(String[] args) {
+        AdminMenu adminMenu = new AdminMenu();
+        adminMenu.runAdminMenu("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDY2MzE5MywiZXhwIjoxNzEwNzQ5NTkzfQ.OQX5ti5oANBjSYshGZXegGr7MbuhyB0GS31cbId2gX4");
+    }
 
 }
