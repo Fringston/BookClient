@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import fredrikkodar.model.LoginResponse;
 import fredrikkodar.model.Role;
 import fredrikkodar.model.User;
@@ -25,6 +26,7 @@ import org.apache.hc.core5.http.io.entity.StringEntity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static fredrikkodar.service.UtilService.*;
 
@@ -203,26 +205,33 @@ public class UserService {
         }
     }
 
-    public static void changeRole (String jwt, Long id, Role role) {
-        try {
-            User user = new User();
-            user.setRole(role);
-            HttpPut request = new HttpPut(String.format("http://localhost:8081/users/%d", id));
-            request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
-            request.setEntity(createPayload(user));
-            try (CloseableHttpResponse response = httpClient.execute(request)) {
-                if (response.getCode() != 200) {
-                    System.out.println("Something went wrong with the request: " + response.getCode());
-                    return;
-                }
+    public static void changeRole(String jwt, Long id, Role role) throws IOException, ParseException {
+        HttpPut request = new HttpPut("http://localhost:8081/users/" + id);
+        request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
+
+        // Create JSON payload manually
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode payload = mapper.createObjectNode()
+                .put("role", role.getAuthority());
+
+        // Serialize JSON payload to string
+        String jsonPayload = mapper.writeValueAsString(payload);
+
+        // Set JSON payload as request entity
+        HttpEntity entity = new StringEntity(jsonPayload, ContentType.APPLICATION_JSON);
+        request.setEntity(entity);
+
+        // Execute the request and handle the response
+        try (CloseableHttpResponse response = httpClient.execute(request)) {
+            int statusCode = response.getCode();
+            if (statusCode == 200) {
                 System.out.println("Role changed successfully");
-            } catch (JsonProcessingException e) {
-                System.out.println("Json Processing Error: " + e.getMessage());
-            } catch (IOException e) {
-                System.out.println("IO Error: " + e.getMessage());
+            } else {
+                System.out.println("Error: " + statusCode);
+                System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
             }
-        } catch (Exception e) {
-            System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
+
 }
