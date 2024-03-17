@@ -137,17 +137,18 @@ public class UserService {
     // Testar denna metod till AdminMenu.java
     public static void deleteUser(String jwt, Long id) {
         try {
-            HttpDelete request = new HttpDelete(String.format("http://localhost:8081/users/%d", id));
+            HttpDelete request = new HttpDelete("http://localhost:8081/users/" + id);
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
-
-                if (response.getCode() != 200) {
-                    System.out.println("Something went wrong with the request: " + response.getCode());
-                    return;
+                int statusCode = response.getCode();
+                if (statusCode == 200) {
+                    System.out.println("User deleted successfully");
+                } else if (statusCode == 404) {
+                    System.out.println("User not found");
+                } else {
+                    System.out.println("Error: " + statusCode);
                 }
-                System.out.println("User deleted successfully");
-
             } catch (IOException e) {
                 System.out.println("IO Error: " + e.getMessage());
             }
@@ -155,6 +156,7 @@ public class UserService {
             System.out.println("Something went wrong: " + e.getMessage());
         }
     }
+
 
     public static void deleteAccount(String jwt) {
         try {

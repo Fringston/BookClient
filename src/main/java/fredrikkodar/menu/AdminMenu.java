@@ -5,6 +5,7 @@ import fredrikkodar.model.User;
 import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
 
+import java.io.IOException;
 import java.util.List;
 
 public class AdminMenu {
@@ -18,7 +19,7 @@ public class AdminMenu {
         }
     }
 
-    public void runAdminMenu(String jwt) {
+    public void runAdminMenu(String jwt) throws IOException {
         while (isRunning) {
             adminMenuChoice();
             int choice = UtilService.getIntInput("Enter choice: ");
@@ -26,7 +27,7 @@ public class AdminMenu {
         }
     }
 
-    private void adminMenuChoice(int choice, String jwt) {
+    private void adminMenuChoice(int choice, String jwt) throws IOException {
         Long id;
         switch (choice) {
             case 1:
@@ -62,9 +63,9 @@ public class AdminMenu {
                 System.out.println("Invalid choice\n");
         }
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AdminMenu adminMenu = new AdminMenu();
-        adminMenu.runAdminMenu("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDY2MzE5MywiZXhwIjoxNzEwNzQ5NTkzfQ.OQX5ti5oANBjSYshGZXegGr7MbuhyB0GS31cbId2gX4");
+        adminMenu.runAdminMenu("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDY2NDQ2MiwiZXhwIjoxNzEwNzUwODYyfQ.vX_U5FaGXJvDq0pmZEKk4AanRgh_9pyqtZoDZlxJFHM");
     }
 
 }
