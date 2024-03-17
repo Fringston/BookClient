@@ -88,6 +88,6 @@ public class AuthorMenu {
     }
 
 public static void main(String[] args) {
-      deleteAuthor("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNjEzMywiZXhwIjoxNzEwNjkyNTMzfQ.1wrV-IzHpLvkc8y6_GHXcTdrGbwbfeZXSY3uWuZ0e9A");
+      addNewAuthor("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDY2MzE5MywiZXhwIjoxNzEwNzQ5NTkzfQ.OQX5ti5oANBjSYshGZXegGr7MbuhyB0GS31cbId2gX4");
     }
 }
