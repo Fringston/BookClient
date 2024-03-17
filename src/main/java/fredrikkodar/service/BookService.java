@@ -146,10 +146,12 @@ public class BookService {
                 System.out.println("Response Body: " + EntityUtils.toString(response.getEntity()));
             }
         }
+
     }
 
 
 
+    
     public static void main(String[] args) throws IOException, ParseException {
         // add book
 //       Book book = new Book(0L,"The Alchemist");
