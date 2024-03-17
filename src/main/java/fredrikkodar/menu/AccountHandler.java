@@ -1,6 +1,5 @@
 package fredrikkodar.menu;
 
-import fredrikkodar.model.LoginResponse;
 import fredrikkodar.service.UserService;
 import fredrikkodar.service.UtilService;
 
@@ -58,7 +57,7 @@ public class AccountHandler {
     }
 
     public static void main(String[] args) {
-        changePassword("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqYWZhcjEiLCJpYXQiOjE3MTA1MDAzNjQsImV4cCI6MTcxMDU4Njc2NH0.Pdff3M2UsTyN05jGKFFw6BA6Djr8qD9Jhy4RNwVLHCA");
+        changePassword("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDUxNTAzOCwiZXhwIjoxNzEwNjAxNDM4fQ.ZERbekDUm4DYA2aPD18f0q3xHj9TrJxa7SX1_7n-NTw");
 
 
     }

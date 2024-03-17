@@ -3,7 +3,6 @@ package fredrikkodar.menu;
 import fredrikkodar.model.Author;
 import fredrikkodar.model.Book;
 import fredrikkodar.service.AuthorService;
-import fredrikkodar.service.BookService;
 import fredrikkodar.service.UtilService;
 
 import java.util.List;
@@ -88,5 +87,7 @@ public class AuthorMenu {
         AuthorService.deleteAuthor(id, jwt);
     }
 
-
+public static void main(String[] args) {
+      deleteAuthor("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNjEzMywiZXhwIjoxNzEwNjkyNTMzfQ.1wrV-IzHpLvkc8y6_GHXcTdrGbwbfeZXSY3uWuZ0e9A");
+    }
 }

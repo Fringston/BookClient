@@ -48,7 +48,7 @@ public class BookMenu {
                 break;
             case 4:
                 System.out.println("Update existing book\n");
-                updateBook(jwt);
+//                updateBook(jwt);
                 break;
             case 5:
                 System.out.println("Delete book\n");
@@ -77,15 +77,23 @@ public class BookMenu {
 
     public void updateBook2(String jwt) throws IOException, ParseException {
         Long bookId = UtilService.getLongInput("Enter book id to update: ");
+        Book existingBook = BookService.getBookById(bookId, jwt); // Fetch the existing book
+        if (existingBook == null) {
+            System.out.println("Book not found");
+            return;
+        }
+
         String newTitle = UtilService.getStringInput("Enter new book title: ");
         Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
-        Book newBook = new Book();
-        newBook.setId(bookId);
-        newBook.setTitle(newTitle);
+
+        existingBook.setTitle(newTitle);
         Author newAuthor = new Author();
         newAuthor.setId(newAuthorId);
-        newBook.setAuthor(newAuthor);
-        BookService.updateBook(bookId,newBook, jwt);
+        existingBook.setAuthor(newAuthor);
+
+        // Extract authorId from existingBook and pass it to updateBook
+        Long authorId = existingBook.getAuthor().getId();
+        BookService.updateBook(bookId, existingBook, authorId, jwt);
     }
 
     public void updateBook(String jwt) throws IOException, ParseException {
@@ -96,10 +104,6 @@ public class BookMenu {
             return;
         }
 
-        Book newBook = new Book();
-        newBook.setId(bookId);
-        newBook.setAuthor(existingBook.getAuthor()); // Set the existing author
-
         System.out.println("1. Update book title");
         System.out.println("2. Update book author");
         System.out.println("3. Update both title and author");
@@ -109,21 +113,21 @@ public class BookMenu {
         switch (choice) {
             case 1:
                 String newTitle = UtilService.getStringInput("Enter new book title: ");
-                newBook.setTitle(newTitle);
+                existingBook.setTitle(newTitle);
                 break;
             case 2:
                 Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
                 Author newAuthor = new Author();
                 newAuthor.setId(newAuthorId);
-                newBook.setAuthor(newAuthor);
+                existingBook.setAuthor(newAuthor);
                 break;
             case 3:
-                newTitle = UtilService.getStringInput("Enter new book title: ");
-                newBook.setTitle(newTitle);
-                newAuthorId = UtilService.getLongInput("Enter new author id: ");
-                newAuthor = new Author();
-                newAuthor.setId(newAuthorId);
-                newBook.setAuthor(newAuthor);
+                String updatedTitle = UtilService.getStringInput("Enter new book title: ");
+                Long updatedAuthorId = UtilService.getLongInput("Enter new author id: ");
+                existingBook.setTitle(updatedTitle);
+                Author updatedAuthor = new Author();
+                updatedAuthor.setId(updatedAuthorId);
+                existingBook.setAuthor(updatedAuthor);
                 break;
             case 4:
                 System.out.println("No updates made.");
@@ -133,7 +137,13 @@ public class BookMenu {
                 return;
         }
 
-        BookService.updateBook(bookId, newBook, jwt);
+        // Extract authorId from existingBook and pass it to updateBook
+        Long authorId = existingBook.getAuthor().getId();
+        BookService.updateBook(bookId, existingBook, authorId, jwt);
     }
 
+public static void main(String[] args) throws IOException, ParseException {
+
+
+    }
 }
