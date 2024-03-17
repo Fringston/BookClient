@@ -32,6 +32,7 @@ public class UserMenu {
                System.out.println("Library\n");
                 BookMenu bookMenu = new BookMenu();
                 bookMenu.runBookMenu(jwt);
+                break;
             case 2:
                 System.out.println("Authors\n");
                 AuthorMenu authorMenu = new AuthorMenu();
