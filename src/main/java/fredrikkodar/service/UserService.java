@@ -159,7 +159,6 @@ public class UserService {
         }
     }
 
-
     public static void deleteAccount(String jwt) {
         try {
             HttpDelete request = new HttpDelete("http://localhost:8081/users/me");
