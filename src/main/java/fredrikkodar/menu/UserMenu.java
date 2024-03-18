@@ -12,7 +12,7 @@ public class UserMenu {
     private boolean isRunning = true;
 
     public void userMenuChoice() {
-        String[] userMenuOptions = {"1. Library", "2. Authors", "3. Handle account", "4. Admin\n"};
+        String[] userMenuOptions = {"1. Library", "2. Authors", "3. Handle account", "4. Admin", "5. Log out\n"};
         for (String option : userMenuOptions) {
             System.out.println(option);
         }
@@ -46,13 +46,18 @@ public class UserMenu {
             case 4:
                 System.out.println("Admin\n");
                 LoginResponse loginResponse = UserService.login();
-                if (isAdmin(loginResponse.getToken())) {
+                if (loginResponse != null && isAdmin(loginResponse.getToken())) {
                     AdminMenu adminMenu = new AdminMenu();
                     adminMenu.runAdminMenu(loginResponse.getToken());
                 } else {
                     System.out.println("Access denied. Only admins can access the admin menu.");
                 }
                 break;
+            case 5:
+                System.out.println("Back to Main Menu\n");
+                isRunning = false;
+                break;
+
             default:
                 System.out.println("Invalid choice\n");
         }

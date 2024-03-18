@@ -52,7 +52,6 @@
         <version>1.18.30</version>
         <scope>provided</scope>
     </dependency>
-
     <!-- Ny dependency -->
     <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5 -->
     <dependency>
@@ -72,6 +71,5 @@
         <version>1.5.3</version>
         <scope>test</scope>
     </dependency>
-
 </dependencies>
 </project>
