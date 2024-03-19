@@ -52,8 +52,9 @@ public class BookMenu {
                 break;
             case 5:
                 System.out.println("Delete book\n");
-                Long deleteBookId = UtilService.getLongInput("Enter book id to delete: ");
-                BookService.deleteBook(deleteBookId, jwt);
+                deleteBook(jwt);
+                //Long deleteBookId = UtilService.getLongInput("Enter book id to delete: ");
+                //BookService.deleteBook(deleteBookId, jwt);
                 break;
             case 6:
                 System.out.println("Back to UserMenu\n");
@@ -73,27 +74,6 @@ public class BookMenu {
         author.setId(authorId);
         book.setAuthor(author);
         BookService.saveBook(book, jwt);
-    }
-
-    public void updateBook2(String jwt) throws IOException, ParseException {
-        Long bookId = UtilService.getLongInput("Enter book id to update: ");
-        Book existingBook = BookService.getBookById(bookId, jwt); // Fetch the existing book
-        if (existingBook == null) {
-            System.out.println("Book not found");
-            return;
-        }
-
-        String newTitle = UtilService.getStringInput("Enter new book title: ");
-        Long newAuthorId = UtilService.getLongInput("Enter new author id: ");
-
-        existingBook.setTitle(newTitle);
-        Author newAuthor = new Author();
-        newAuthor.setId(newAuthorId);
-        existingBook.setAuthor(newAuthor);
-
-        // Extract authorId from existingBook and pass it to updateBook
-        Long authorId = existingBook.getAuthor().getId();
-        BookService.updateBook(bookId, existingBook, authorId, jwt);
     }
 
     public void updateBook(String jwt) throws IOException, ParseException {
@@ -142,9 +122,14 @@ public class BookMenu {
         BookService.updateBook(bookId, existingBook, authorId, jwt);
     }
 
-public static void main(String[] args) throws IOException, ParseException {
-        BookMenu bookMenu = new BookMenu();
-        bookMenu.runBookMenu("eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDY2MzE5MywiZXhwIjoxNzEwNzQ5NTkzfQ.OQX5ti5oANBjSYshGZXegGr7MbuhyB0GS31cbId2gX4");
-
+    public void deleteBook(String jwt) throws IOException, ParseException {
+        Long deleteBookId = UtilService.getLongInput("Enter book id to delete: ");
+        Book bookToDelete = BookService.getBookById(deleteBookId, jwt);
+        if (bookToDelete == null) {
+            System.out.println("Book with id " + deleteBookId + " does not exist. Returning to menu.");
+            return;
+        }
+        BookService.deleteBook(deleteBookId, jwt);
     }
+
 }
