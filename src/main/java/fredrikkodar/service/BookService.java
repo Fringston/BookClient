@@ -27,7 +27,7 @@ public class BookService {
 
     public static List<Book> getAllBooks(String jwt) throws IOException, ParseException {
        // call the API to get all books
-        HttpGet request = new HttpGet("http://localhost:8081/books");
+        HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/books");
         // add the JWT to the request
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         // execute the request
@@ -49,7 +49,7 @@ public class BookService {
     // get a book by id
     public static Book getBookById(Long id, String jwt) throws IOException, ParseException {
         // call the API to get a book by id
-        HttpGet request = new HttpGet("http://localhost:8081/books/" + id);
+        HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/" + id);
         // add the JWT to the request
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         // execute the request
@@ -72,7 +72,7 @@ public class BookService {
 
     // save a book
     public static void saveBook(Book book, String jwt) throws IOException, ParseException {
-        HttpPost request = new HttpPost("http://localhost:8081/books");
+        HttpPost request = new HttpPost("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/books");
         ObjectMapper mapper = new ObjectMapper();
         // Construct JSON payload manually
         JsonNode payload = mapper.createObjectNode()
@@ -104,7 +104,7 @@ public class BookService {
 
     // delete a book
     public static void deleteBook(Long id, String jwt) throws IOException {
-        HttpDelete request = new HttpDelete("http://localhost:8081/books/" + id);
+        HttpDelete request = new HttpDelete("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/" + id);
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
         CloseableHttpResponse response = httpClient.execute(request);
         if (response.getCode() != 200){
@@ -116,7 +116,7 @@ public class BookService {
 
     // update a book
     public static void updateBook(Long id, Book book, Long authorId, String jwt) throws IOException, ParseException {
-        HttpPut request = new HttpPut("http://localhost:8081/books");
+        HttpPut request = new HttpPut("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/books");
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
         ObjectMapper mapper = new ObjectMapper();
