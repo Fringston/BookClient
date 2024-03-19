@@ -53,8 +53,6 @@ public class BookMenu {
             case 5:
                 System.out.println("Delete book\n");
                 deleteBook(jwt);
-                //Long deleteBookId = UtilService.getLongInput("Enter book id to delete: ");
-                //BookService.deleteBook(deleteBookId, jwt);
                 break;
             case 6:
                 System.out.println("Back to UserMenu\n");

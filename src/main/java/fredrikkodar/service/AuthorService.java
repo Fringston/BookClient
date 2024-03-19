@@ -29,7 +29,7 @@ public class AuthorService {
     public static List<Author> getAuthors(String jwt) {
         try {
             // call the API to get all authors
-            HttpGet request = new HttpGet("http://localhost:8081/authors");
+            HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors");
             // add the JWT to the request
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             // execute the request
@@ -57,7 +57,7 @@ public class AuthorService {
     public static Author getAuthorById(Long id, String jwt) {
         try {
             // call the API to get an author by id
-            HttpGet request = new HttpGet("http://localhost:8081/authors/" + id);
+            HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors/" + id);
             // add the JWT to the request
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             // execute the request
@@ -85,7 +85,7 @@ public class AuthorService {
     public static void saveAuthor(Author author, String jwt) {
         try {
             Author newAuthor = author;
-            HttpPost request = new HttpPost("http://localhost:8081/authors");
+            HttpPost request = new HttpPost("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors");
 
             ObjectMapper mapper = new ObjectMapper();
             StringEntity payload = new StringEntity(mapper.writeValueAsString(newAuthor), ContentType.APPLICATION_JSON);
@@ -116,7 +116,7 @@ public class AuthorService {
     public static void deleteAuthor(Long id, String jwt) {
         try {
             // call the API to delete an author by id
-            HttpDelete request = new HttpDelete("http://localhost:8081/authors/" + id);
+            HttpDelete request = new HttpDelete("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors/" + id);
             // add the JWT to the request
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             // execute the request
@@ -134,7 +134,7 @@ public class AuthorService {
 
     public static void updateAuthor(Long id, Author author, String jwt) {
         try {
-            HttpPut request = new HttpPut("http://localhost:8081/authors");
+            HttpPut request = new HttpPut("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors");
 
             // Serialize the author object to JSON
             ObjectMapper mapper = new ObjectMapper();
@@ -170,7 +170,7 @@ public class AuthorService {
     public static List <Book> getBooksByAuthor(Long id, String jwt) {
         try {
             // call the API to get all books by author id
-            HttpGet request = new HttpGet("http://localhost:8081/authors/" + id + "/books");
+            HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/authors/" + id + "/books");
             // add the JWT to the request
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             // execute the request
@@ -193,10 +193,4 @@ public class AuthorService {
             return null;
         }
     }
-    public static void main(String[] args) {
-//        Author newAuthor = new Author("New Author");
-//      updateAuthor(1L, newAuthor, "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMDYwNjEzMywiZXhwIjoxNzEwNjkyNTMzfQ.1wrV-IzHpLvkc8y6_GHXcTdrGbwbfeZXSY3uWuZ0e9A");
-    }
-
-
 }

@@ -38,7 +38,7 @@ public class UserService {
             String username = getStringInput("Enter username: ");
             String password = getPasswordInput("Enter your password: ");
 
-            HttpPost request = new HttpPost("http://localhost:8081/auth/register");
+            HttpPost request = new HttpPost("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/auth/register");
             ObjectMapper mapper = new ObjectMapper();
 
             // Construct JSON payload manually
@@ -69,7 +69,7 @@ public class UserService {
         String username = getStringInput("Enter username ");
         String password = getPasswordInput("Enter your password ");
 
-        HttpPost request = new HttpPost("http://localhost:8081/auth/login");
+        HttpPost request = new HttpPost("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/auth/login");
         ObjectMapper mapper = new ObjectMapper();
 
         // Construct JSON payload manually
@@ -103,7 +103,7 @@ public class UserService {
     public static List<User> getUsers(String jwt) {
 
         try {
-            HttpGet request = new HttpGet("http://localhost:8081/users/all");
+            HttpGet request = new HttpGet("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/users/all");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -139,7 +139,7 @@ public class UserService {
     // Testar denna metod till AdminMenu.java
     public static void deleteUser(String jwt, Long id) {
         try {
-            HttpDelete request = new HttpDelete("http://localhost:8081/users/" + id);
+            HttpDelete request = new HttpDelete("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/users/" + id);
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -161,7 +161,7 @@ public class UserService {
 
     public static void deleteAccount(String jwt) {
         try {
-            HttpDelete request = new HttpDelete("http://localhost:8081/users/me");
+            HttpDelete request = new HttpDelete("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/users/me");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -185,7 +185,7 @@ public class UserService {
     public static void changePassword (String jwt, String oldPassword, String newPassword, String confirmPassword) {
         try {
             ChangingPassword changingPassword = new ChangingPassword(oldPassword, newPassword, confirmPassword);
-            HttpPut request = new HttpPut("http://localhost:8081/users/changePass");
+            HttpPut request = new HttpPut("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/users/changePass");
             request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
             request.setEntity(createPayload(changingPassword));
             try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -205,7 +205,7 @@ public class UserService {
     }
 
     public static void changeRole(String jwt, Long id, Role role) throws IOException, ParseException {
-        HttpPut request = new HttpPut("http://localhost:8081/users/" + id);
+        HttpPut request = new HttpPut("http://finalserver-env.eba-mvm2fjyr.eu-north-1.elasticbeanstalk.com/users/" + id);
         request.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwt);
 
         // Create JSON payload manually
